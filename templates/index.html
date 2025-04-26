@@ -7,6 +7,30 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-     <h1>{{ message }}</h1>   
+    <div class="container">
+        <h1>Test Generator<h1>
+    <form action="/generate_prompt" method="POST" class="form">
+        <div class="form-group">
+            <label for="course">Course</label>
+            <input type="text" id="course" name="course" plageholder="Course" required>
+        </div>
+        <div class=""form-group>
+            <label for="topic">Topic</label>
+            <input type="text" id="topic" name="topic" placeholder="Topic" required>
+        </div>
+        <div class="form-group"></div>
+            <label for="num_questions">Number of Questions</label>
+            <input type="number" id="num_questions" name="num_questions" value="10" min="1" max="20" required>
+        <div>
+            <button type="submit" class="submit-button">Submit</button>
+        </div>
+        </form>
+    </form>
+
+    
+
+    {% if message is not none %}
+        <h1 id="prompt">{{ message }}</h1>
+    {% endif %}
 </body>
 </html>
