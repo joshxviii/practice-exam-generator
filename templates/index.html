@@ -125,6 +125,22 @@
             color: #bb86fc;
             text-decoration: none;
         }
+        #course-form, #topic-form {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .form-group .label {
+            width: 30%;
+            text-align: right; /* Align label text to the right */
+            margin-right: 1rem; /* Add spacing between the label and input */
+        }
+        .title p {
+            display: inline; /* Ensure it stays inline with the text */
+            font-size: 2.5rem; /* Adjust size to make it stand out */
+            color: #bb86fc; /* Highlight color */
+        }
+
     </style>
     <div class="left-section">
         <h2>Easy. Efficient. Effective</h2>
@@ -141,16 +157,16 @@
     </div>
     <div class="container">
         <a href="/" class="logo">TrueTest AI</a>
-        <h1 class="title">Try TrueTest AI</h1>
+        <h1 class="title">Try <p>TrueTest AI</p></h1>
 
         <form action="/practice_exam" method="POST" class="form">
-            <div class="form-group">
-                <label for="course">Course</label>
+            <div id="course-form" class="form-group">
+                <label class="label" for="course">Course</label>
                 <input type="text" id="course" name="course" placeholder="Enter course name" required>
             </div>
 
-            <div class="form-group">
-                <label for="topic">Topic</label>
+            <div id="topic-form" class="form-group">
+                <label class="label" for="topic">Topic</label>
                 <input type="text" id="topic" name="topic" placeholder="Enter topic" required>
             </div>
             <div class="form-group">
@@ -164,9 +180,11 @@
                 <button type="submit" formaction="/generate_pdf" formmethod="GET" class="submit-button">Generate PDF</button>
             </div>
         </form>
-        <form action="/file" method="POST" enctype="multipart/form-data" class="form" style="margin-top: 2rem;">
-            <div class="form-group" style="display: flex; align-items: center; gap: 1rem;">
-                <input type="file" name="import" id="file-input" required>
+        <form action="/file" method="POST" enctype="multipart/form-data" class="import-form" style="margin-top: 2rem;">
+            <div class="form-group">
+                <input type="file" name="import" id="file-input" style="width: 90%;" required>
+            </div>
+            <div class="form-group">
                 <button type="submit" class="submit-button">Import</button>
             </div>
         </form>
