@@ -63,13 +63,17 @@
             list-style-type: disc;
             margin-left: 1.5rem;
             color: white;
-            margin-bottom: 2rem; /* Add more space below the list */
+            margin-bottom: 1rem; /* Reduce space below the list */
             padding-left: 2rem; /* Indent the bullet points */
         }
 
         .left-section ul li {
             font-size: 1.6rem; /* Make list items slightly smaller */
             margin-bottom: 1rem; /* Add more space below list items */
+        }
+
+        .left-section h4 {
+            margin-bottom: 2.5rem; /* Increase space below the h4 tag */
         }
 
         @keyframes slideIn {
@@ -80,6 +84,38 @@
             to {
                 transform: translateX(0);
                 opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                overflow-y: auto; /* Enable vertical scrolling for mobile */
+            }
+
+            .left-section {
+                position: static; /* Stack the left section above the container */
+                width: 100%; /* Take full width on mobile */
+                padding: 1rem; /* Adjust padding for smaller screens */
+                text-align: center; /* Center-align text for better readability */
+            }
+
+            .container {
+                margin: 0 auto; /* Center the container */
+                width: 90%; /* Adjust width for mobile */
+                padding: 1rem; /* Add padding for better spacing */
+            }
+
+            .left-section h2, .left-section h3, .left-section ul, .left-section p {
+                font-size: 1.2rem; /* Adjust font size for smaller screens */
+                line-height: 1.5; /* Ensure proper spacing */
+            }
+
+            .left-section ul {
+                padding-left: 1rem; /* Reduce indentation for mobile */
+            }
+
+            .left-section ul li {
+                font-size: 1rem; /* Further reduce list item size for mobile */
             }
         }
     </style>
@@ -94,7 +130,7 @@
             <li>Learn <i>exactly</i> what to focus on to pass your exams</li>
         </ul>
         <h4>TrueTest AI can prep you for any exam, at any level, at any time</h4>
-        <p>Made by Fabian, Josh, and Chris</p>
+        <p>Made by <a href="https://github.com/fabian822">Fabian</a>,<a href="https://github.com/joshxviii"> Josh</a>, and <a href="https://github.com/AlgNinja"> Chris</a></p>
     </div>
     <div class="container">
         <h1 class="title">Try TrueTest AI</h1>

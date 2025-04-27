@@ -102,3 +102,9 @@ button.submit-button:active {
         font-size: 0.9rem;
     }
 }
+a {
+    color: white
+}
+a:focus {
+    color: purple;
+}
