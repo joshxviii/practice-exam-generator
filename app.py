@@ -1,5 +1,5 @@
 from google import genai
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 import re
 
 app = Flask(__name__)
@@ -62,6 +62,7 @@ def generate_prompt():
             error = f"Error generating questions: {str(e)}"
     
     problems = parse_prompt(message)
+    session['problems'] = problems
     # exam_problems_html = generate_html([
     #     {
     #         'problem': 'What is the value of sin(π/6)?',
@@ -113,14 +114,31 @@ def generate_html(problems):
                 f'    </label><br>\n'
             )
 
-        html += f'<p>*Answer: {p["answer"]}</p>' #probably take this part out
+        #html += f'<p>*Answer: {p["answer"]}</p>' #probably take this part out
         html += '  </div>\n  <br>\n'
        
     html += '<input type="submit" class="submit-button" value="Submit">\n'
     html += '</form>'
     return html
 
-
+@app.route("/submit_quiz" , methods=["POST"])
+def submit_quiz():
+    score = 0
+    total = 0
+    correct_answers = []
+    user_answers = []
+    problems = session.get("problems", [])
+    for idx, p in enumerate(problems):
+        correct_answer = p['answer']
+        user_answer = request.form.get(f'q{idx}')
+        total += 1
+        if user_answer == correct_answer:
+            score += 1
+            correct_answers.append(correct_answer)
+        else:
+            user_answers.append(user_answer)
+    return render_template("answer.html", score=score, total=total, correct_answers=correct_answers, user_answers=user_answers)
+        
 
 """Main"""
 if __name__ == '__main__':
