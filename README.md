@@ -4,6 +4,7 @@
 - **Generate Practice Exams**: Create exams for any subject, with questions covering a wide variety of topics.
 - **Answer Questions**: Answer multiple-choice questions and receive a score at the end of the exam.
 - **Feedback**: Get feedback based on your answers to help improve your understanding of the material.
+- **Import Exams**: Import pre-made exams from a json file in case you want to share a particularly good exam.
 
 ### **How To Use**
 1. **Input Information**:  
