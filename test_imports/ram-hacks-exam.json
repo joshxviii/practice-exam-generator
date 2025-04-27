@@ -1,0 +1,50 @@
+[
+    {
+        "problem": "What is the most important ingredient for a successful RamHacks hackathon experience?",
+        "a": "Winning the grand prize",
+        "b": "Having a fully functional project by the deadline",
+        "c": "Learning something new and having fun",
+        "d": "Impressing the judges with advanced technical skills",
+        "answer": "c"
+    },
+    {
+        "problem": "At RamHacks, \"hacking\" primarily refers to:",
+        "a": "Gaining unauthorized access to computer systems",
+        "b": "Rapid prototyping and creative problem-solving",
+        "c": "Breaking computer hardware",
+        "d": "Writing complex algorithms perfectly the first time",
+        "answer": "b"
+    },
+    {
+        "problem": "Which of the following is the *least* effective way to approach a challenge at RamHacks?",
+        "a": "Collaborating with teammates to brainstorm ideas",
+        "b": "Seeking help from mentors when stuck",
+        "c": "Spending hours trying to solve a problem alone without asking for help",
+        "d": "Dividing tasks amongst team members based on their strengths",
+        "answer": "c"
+    },
+    {
+        "problem": "You encounter a team struggling with a technical issue at RamHacks. What is the most appropriate response?",
+        "a": "Ignore them; it's a competition.",
+        "b": "Offer your assistance, even if you're not an expert in that area.",
+        "c": "Casually mention how much better your project is.",
+        "d": "Tell them to give up and try a simpler idea.",
+        "answer": "b"
+    },
+    {
+        "problem": "Which attitude best embodies the \"RamHacks Hacker\" spirit?",
+        "a": "\"I need to build the most technologically advanced project possible.\"",
+        "b": "\"I need to win at all costs, even if it means working alone.\"",
+        "c": "\"I'm here to learn, connect, and create something cool with others.\"",
+        "d": "\"I already know everything, so I'll just coast through the weekend.\"",
+        "answer": "c"
+    },
+    {
+        "problem": "You have a brilliant idea but are running out of time. What should you prioritize?",
+        "a": "Implementing every single feature perfectly.",
+        "b": "Focusing on the core functionality and creating a functional prototype.",
+        "c": "Designing a complex user interface.",
+        "d": "Writing extensive documentation for your project.",
+        "answer": "b"
+    }
+]

@@ -9,9 +9,14 @@
 <body>
 
     <div class="container">
-        <h1>Practice Exam for {{ course }} Course.</h1>
+        {% if course != '' %}
+          <h1>Practice Exam for {{ course }} Course.</h1>
+        {% else %}
+          <h1>Practice Exam</h1>
+        {% endif %}
+        
 
-        <!-- This is where the generated exam html will appear -->
+        <!-- This is where the generated html exam will appear -->
         {{ exam_problems_html|safe }}
     </div>
 
