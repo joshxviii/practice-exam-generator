@@ -1,7 +1,8 @@
 from google import genai
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for, send_file
 import re
 import json
+import os
 from fpdf import FPDF
 
 app = Flask(__name__)
@@ -70,7 +71,12 @@ def generate_exam():
             error = f"Error generating questions: {str(e)}"
             print(error)
 
-    session['problems'] = problems
+    # Ensure the number of questions matches the user's input
+    if len(problems) != num_questions:
+        return f"Expected {num_questions} questions, but got {len(problems)}. Please try again.", 400
+
+    # Store the problems in the session
+    session['questions'] = problems
 
     """ Generate a html template for each problem from the prompt """
     html = '<form action="/submit_quiz" method="POST">\n'
@@ -182,49 +188,38 @@ def import_questions():
 
 
 """ Generate PDF Logic """
-class PDF(FPDF):
-    def header(self):
-        self.set_font('Arial', 'B', 12)
-        self.cell(0, 10, 'Practice Exam', 0, 1, 'C')
-
-    def footer(self):
-        self.set_y(-15)
-        self.set_font('Arial', 'I', 8)
-        self.cell(0, 10, f'Page {self.page_no()}', 0, 0, 'C')
-
 @app.route('/generate_pdf', methods=['GET'])
 def generate_pdf():
-    problems = session.get('problems', [])
+    # Correctly handle the structure of questions stored in the session
+    if 'questions' not in session or not session['questions']:
+        return "No questions available to generate PDF", 400
 
-    if not problems:
-        return 'No problems available to generate PDF', 400
+    questions = session['questions']
 
-    pdf = PDF()
+    pdf = FPDF()
     pdf.set_auto_page_break(auto=True, margin=15)
-
-    # Add questions to the PDF
-    for idx, problem in enumerate(problems):
-        pdf.add_page()
-        pdf.set_font('Arial', '', 12)
-        pdf.multi_cell(0, 10, f'Question {idx + 1}: {problem["problem"]}')
-        pdf.ln(5)
-        for option in ['a', 'b', 'c', 'd']:
-            pdf.cell(0, 10, f'({option}) {problem[option]}', ln=True)
-
-    # Add answer key to the PDF
     pdf.add_page()
-    pdf.set_font('Arial', 'B', 12)
-    pdf.cell(0, 10, 'Answer Key', ln=True)
-    pdf.ln(10)
-    pdf.set_font('Arial', '', 12)
-    for idx, problem in enumerate(problems):
-        pdf.cell(0, 10, f'Question {idx + 1}: {problem["answer"]}', ln=True)
+    pdf.set_font("Arial", size=12)
 
-    # Save the PDF to a file
-    pdf_output_path = 'static/practice_exam.pdf'
+    # Add all questions to the same page
+    for idx, question in enumerate(questions, start=1):
+        pdf.multi_cell(0, 10, f"Q{idx}: {question['problem']}")
+        for option in ['a', 'b', 'c', 'd']:
+            pdf.multi_cell(0, 10, f"   {option}) {question[option]}")
+
+    # Add an answer key on a separate page
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+    pdf.cell(0, 10, "Answer Key", ln=True, align="C")
+    pdf.ln(10)  # Add some space
+
+    for idx, question in enumerate(questions, start=1):
+        pdf.cell(0, 10, f"Q{idx}: {question['answer']}", ln=True)
+
+    pdf_output_path = os.path.join('static', 'practice_exam.pdf')
     pdf.output(pdf_output_path)
 
-    return f'PDF generated successfully. <a href="/{pdf_output_path}" target="_blank">Download here</a>'
+    return send_file(pdf_output_path, as_attachment=True)
 
 
 
