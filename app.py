@@ -130,23 +130,23 @@ def submit_quiz():
     wrong_questions = []
     wrong_answers = []
     html = '<form action="/submit_quiz" method="POST">\n'
-    problems = session.get("problems", [])
+    problems = session.get("questions", [])  # Retrieve questions from the correct session key
 
     """ Similar to html generation as the Exam Page, but this time for the Answers Page """
     for idx, p in enumerate(problems):
         html += f'  <div class="problem-block">\n'
         html += f'    <p><strong>Question {idx+1}:</strong> {p["problem"]}</p>\n'
-        correct_answer = p['answer'] # a, b, c or d
+        correct_answer = p['answer']
         user_answer = request.form.get(f'q{idx}')
         total += 1
         response = ""
-        if(user_answer == correct_answer):
-            score+=1
+        if user_answer == correct_answer:
+            score += 1
         else:
             prompt = f"The question was {p['problem']}. The correct answer was {p[correct_answer]}. I got {p[user_answer]}. Walk me through what I did wrong in 1 sentence. Use only UTF-8 characters when responding and use no special characters."
-            response = client.models.generate_content(model = "gemini-2.0-flash", contents = prompt).text
-            wrong_answers.append(p[user_answer])
+            response = client.models.generate_content(model="gemini-2.0-flash", contents=prompt).text
             wrong_questions.append(p["problem"])
+            wrong_answers.append(user_answer)
         for letter in ['a', 'b', 'c', 'd']:
             html += (   # Mark correct answers in green and incorrect answers in red.
                 f'      <label class="{("green" if (letter == correct_answer) else "")} {("red" if (letter == user_answer and correct_answer != user_answer) else "")}">\n'
@@ -154,7 +154,7 @@ def submit_quiz():
                 f'          ({letter}) {p[letter]}\n'
                 f'      </label><br>\n'
             )
-        if(response != ""):
+        if user_answer != correct_answer:
             html += f"<p>What went wrong: {response}</p>"
         html += '  </div>\n  <br>\n'
     html += '</form>'
@@ -162,12 +162,12 @@ def submit_quiz():
     # Generate feedback
     input = ""
     for a, q in zip(wrong_answers, wrong_questions):
-        input += f"The question was {q}. The answer I incorrectly got was {a}."
+        input += f"The question was {q}. The answer I incorrectly got was {a}. "
     input += "Given all the mistakes I made on this practice test, give me the main subjects that I should work on to improve my skills in this topic in 1 sentence."
-    if(len(wrong_answers) > 0):
-        html += (
-            f'<br><p>Tips for the future: {client.models.generate_content(model = "gemini-2.0-flash", contents = input).text}</p>'
-        ) 
+    if len(wrong_answers) > 0:
+        feedback = client.models.generate_content(model="gemini-2.0-flash", contents=input).text
+        html += f'<br><p>Tips for the future: {feedback}</p>'
+
     return render_template("answer.html", answers_html=html, score=score, total=total)  
 
 

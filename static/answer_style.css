@@ -17,7 +17,7 @@
 }
 html, body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f5f7fa;
+    background-color: #121212; /* Set the body background to the same dark color */
     height: 100vh;
     display: flex;
     height: auto;

@@ -1,7 +1,8 @@
 /*#region EXAM.HTML */
 html, body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f5f7fa;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #121212; /* Set the entire page background to dark */
+    color: #e0e0e0;
     height: 100vh;
     display: flex;
     height: auto;
@@ -14,10 +15,19 @@ html, body {
     align-items: center;
 }
 
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the problem containers within the form */
+    gap: 1rem;
+}
+
 .problem-block {
+    width: 100%;
+    max-width: 600px; /* Ensure consistent width for problem containers */
+    margin: 0 auto; /* Center the problem block with even spacing */
+    padding: 15px; /* Ensure consistent padding */
     border: 1px solid #ccc;
-    padding: 15px;
-    margin-bottom: 20px;
     border-radius: 8px;
 }
 
@@ -33,6 +43,8 @@ html, body {
     display: flex;
     align-items: flex-start;
     gap: 8px;
+    margin: 0 auto; /* Center the choice label with even spacing */
+    padding: 0 10px; /* Add consistent padding on left and right */
     margin-bottom: 10px;
     line-height: 1.4;
 }

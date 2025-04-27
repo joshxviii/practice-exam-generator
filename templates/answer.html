@@ -6,10 +6,10 @@
     <title>Score</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='answer_style.css') }}">
 </head>
-<body>
-    <h1>Score: {{score}} / {{total}}</h1>
+<body style="background-color: #121212; color: #e0e0e0; font-family: 'Montserrat', sans-serif; margin: 0; padding: 0;">
+    <h1 style="color: #bb86fc; text-align: center;">Score: {{score}} / {{total}}</h1>
 
-    <div class="container">
+    <div class="container" style="background-color: #1e1e1e; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5); padding: 2rem; margin: 2rem auto; max-width: 800px;">
         <!-- This is where the generated html answers will appear -->
         {{ answers_html|safe }}
     </div>
