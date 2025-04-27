@@ -11,20 +11,20 @@ except Exception as e:
     print(f"Error initializing Gemini client: {e}")
     client = None
 
+"""Home page"""
 @app.route("/", methods=["GET"])
 def home():
     print("HELLO")
 
     # if request.method == "POST":
     #     return generate_prompt()
-    questions = session.pop('questions', None)
-    error = session.pop('error', None)
-    message = session.pop('message', None)
-    return render_template("index.html", questions=questions, error=error, message=message)
+    # questions = session.pop('questions', None)
+    # error = session.pop('error', None)
+    # message = session.pop('message', None)
+    #return render_template("index.html", questions=questions, error=error, message=message)
+    return render_template("index.html")
 
-
-
-@app.route('/generate_prompt', methods=["POST"])
+@app.route('/practice_exam', methods=["POST"])
 def generate_prompt():
     message = ""
     questions = ""
@@ -51,12 +51,12 @@ def generate_prompt():
         prompt = (
             f"Act as a tutor for {course}. Generate {num_questions} multiple-choice practice problems on {topic}. "
             "Format each problem as follows:"
-            "Problem: [Question]"
+            "problem: [Question]"
             "a) [Option]"
             "b) [Option]"
             "c) [Option]"
             "d) [Option]."
-            "answer: [A, B, C, or D]"
+            "answer: [a | b | c | d]"
             "Use only UTF-8 characters. Separate problems with a blank line."
         )
 
@@ -66,16 +66,31 @@ def generate_prompt():
             questions = message
         except Exception as e:
             error = f"Error generating questions: {str(e)}"
-    #print(parse_prompt(message))
+    
     session['message'] = message
+    print(message)
     session['error'] = error
     session['questions'] = questions
+    problems = parse_prompt(message)
+    # exam_problems_html = generate_html([
+    #     {
+    #         'problem': 'What is the value of sin(π/6)?',
+    #         'a': '1/2',
+    #         'b': '√3/2',
+    #         'c': '1',
+    #         'd': '0'
+    #     }
+    # ])
+    exam_problems_html = generate_html(problems)
 
-    return redirect(url_for("home"))
+    #Go to new page with generated problems
+    return render_template("exam.html", exam_problems_html=exam_problems_html)
 
 
+
+"""Parse the prompt output into a map with the relavent information"""
 def parse_prompt(prompt):
-    pattern = r'Problem:\s*(.*?)\s*a\)\s*(.*?)\s*b\)\s*(.*?)\s*c\)\s*(.*?)\s*d\)\s*(.*?)(?=\s*Problem:|$)'
+    pattern = r'problem:\s*(.*?)\s*a\)\s*(.*?)\s*b\)\s*(.*?)\s*c\)\s*(.*?)\s*d\)\s*(.*?)\s*answer:\s*(\w)'
     matches = re.findall(pattern, prompt, re.DOTALL)
 
     problems = []
@@ -85,11 +100,34 @@ def parse_prompt(prompt):
             'a': match[1].strip(),
             'b': match[2].strip(),
             'c': match[3].strip(),
-            'd': match[4].strip()
+            'd': match[4].strip(),
+            'answer': match[5].strip()
         }
         problems.append(problem)
     return problems
 
+
+
+"""Generate an html template for each problem that can be injected into the renderer"""
+def generate_html(problems):
+    html = '<form action="/submit_quiz" method="POST">\n'
+    for idx, p in enumerate(problems):
+        html += f'  <div class="problem-block">\n'
+        html += f'    <p><strong>Question {idx+1}:</strong> {p["problem"]}</p>\n'
+        
+        for letter in ['a', 'b', 'c', 'd']:# create radio button selection for each problem
+            html += (
+                f'    <label>\n'
+                f'      <input type="radio" name="q{idx}" value="{letter}">\n'
+                f'      ({letter}) {p[letter]}\n'
+                f'    </label><br>\n'
+            )
+        
+        html += '  </div>\n  <br>\n'
+        html += f'<p>*Answer: {p["answer"]}</p>'
+    html += '<input type="submit" value="Submit">\n'
+    html += '</form>'
+    return html
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True)
