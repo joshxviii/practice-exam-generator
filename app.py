@@ -183,7 +183,7 @@ def import_questions():
         return 'Invalid JSON file', 400
 
     # Store the imported questions in the session
-    session['questions'] = data
+    session['problems'] = data
 
     # Redirect to the exam page to display the imported questions
     return redirect(url_for('generate_exam', is_from_import=True))
