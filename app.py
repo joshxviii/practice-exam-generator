@@ -2,6 +2,7 @@ from google import genai
 from flask import Flask, render_template, request, session, redirect, url_for
 import re
 import json
+from fpdf import FPDF
 
 app = Flask(__name__)
 app.secret_key = "web-key"
@@ -177,6 +178,53 @@ def import_questions():
             
     session['problems'] = data
     return redirect(url_for('generate_exam', is_from_import=True))
+
+
+
+""" Generate PDF Logic """
+class PDF(FPDF):
+    def header(self):
+        self.set_font('Arial', 'B', 12)
+        self.cell(0, 10, 'Practice Exam', 0, 1, 'C')
+
+    def footer(self):
+        self.set_y(-15)
+        self.set_font('Arial', 'I', 8)
+        self.cell(0, 10, f'Page {self.page_no()}', 0, 0, 'C')
+
+@app.route('/generate_pdf', methods=['GET'])
+def generate_pdf():
+    problems = session.get('problems', [])
+
+    if not problems:
+        return 'No problems available to generate PDF', 400
+
+    pdf = PDF()
+    pdf.set_auto_page_break(auto=True, margin=15)
+
+    # Add questions to the PDF
+    for idx, problem in enumerate(problems):
+        pdf.add_page()
+        pdf.set_font('Arial', '', 12)
+        pdf.multi_cell(0, 10, f'Question {idx + 1}: {problem["problem"]}')
+        pdf.ln(5)
+        for option in ['a', 'b', 'c', 'd']:
+            pdf.cell(0, 10, f'({option}) {problem[option]}', ln=True)
+
+    # Add answer key to the PDF
+    pdf.add_page()
+    pdf.set_font('Arial', 'B', 12)
+    pdf.cell(0, 10, 'Answer Key', ln=True)
+    pdf.ln(10)
+    pdf.set_font('Arial', '', 12)
+    for idx, problem in enumerate(problems):
+        pdf.cell(0, 10, f'Question {idx + 1}: {problem["answer"]}', ln=True)
+
+    # Save the PDF to a file
+    pdf_output_path = 'static/practice_exam.pdf'
+    pdf.output(pdf_output_path)
+
+    return f'PDF generated successfully. <a href="/{pdf_output_path}" target="_blank">Download here</a>'
 
 
 
