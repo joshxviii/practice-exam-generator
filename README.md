@@ -69,7 +69,7 @@ practice-exam-generator/
 ├── templates/               # HTML templates
 │   ├── index.html           # Main page layout
 │   └── exam.html            # Results page with score and feedback
-│   └── answer.html          # Score page for display how you did.
+│   └── answer.html          # Score page for displaying feedback on your performance.
 ├── static/                  # Static files (CSS, images, JS)
 │   ├── home_style.css       # Custom CSS styles
 │   ├── ...
