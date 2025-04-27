@@ -52,4 +52,21 @@ h1 {
     letter-spacing: 1px;
 }
 
+.submit-button {
+    background-color: #4CAF50; /* green but soft */
+    color: white;
+    padding: 12px 24px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 30px;
+}
+
+.submit-button:hover {
+    background-color: #45a049; /* slightly darker on hover */
+    transform: scale(1.05);    /* subtle pop on hover */
+}
+
 /*#endregion*/

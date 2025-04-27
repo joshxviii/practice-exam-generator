@@ -58,11 +58,9 @@ def generate_prompt():
         try:
             response = client.models.generate_content(model = "gemini-2.0-flash", contents = prompt)
             message = response.text
-            questions = message
         except Exception as e:
             error = f"Error generating questions: {str(e)}"
     
-    print(message)
     problems = parse_prompt(message)
     # exam_problems_html = generate_html([
     #     {
@@ -118,7 +116,7 @@ def generate_html(problems):
         html += f'<p>*Answer: {p["answer"]}</p>' #probably take this part out
         html += '  </div>\n  <br>\n'
        
-    html += '<input type="submit" value="Submit">\n'
+    html += '<input type="submit" class="submit-button" value="Submit">\n'
     html += '</form>'
     return html
 

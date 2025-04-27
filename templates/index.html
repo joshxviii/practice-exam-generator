@@ -22,13 +22,13 @@
             <label for="num_questions">Number of Questions</label>
             <input type="number" id="num_questions" name="num_questions" value="10" min="1" max="20" required>
         <div>
-            <button type="submit" class="submit-button">Submit</button>
+            <button type="submit" class="submit-button">Generate</button>
         </div>
         </form>
     </form>
 
 
-    
+
     {% if message is not none %}
         <h1 id="prompt">{{ message }}</h1>
     {% endif %}
