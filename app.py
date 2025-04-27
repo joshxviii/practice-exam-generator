@@ -8,6 +8,7 @@ app.secret_key = "web-key"
 def get_api_key():
     with open('api_key.txt', 'r') as file:
         api_key = file.readline().strip().split('=')[1]
+        print(api_key)
         return api_key
 try: 
     client = genai.Client(api_key=get_api_key())
@@ -55,8 +56,10 @@ def generate_prompt():
         try:
             response = client.models.generate_content(model = "gemini-2.0-flash", contents = prompt)
             message = response.text
+            print(message)
         except Exception as e:
             error = f"Error generating questions: {str(e)}"
+            print(error)
     
     problems = parse_prompt(message)
     session['problems'] = problems
@@ -122,7 +125,7 @@ def submit_quiz():
         if(user_answer == correct_answer):
             score+=1
         else:
-            prompt = f"The question was {p["problem"]}. The correct answer was {p[correct_answer]}. I got {p[user_answer]}. Walk me through what I did wrong in 1 sentence. Use only UTF-8 characters when responding and use no special characters."
+            prompt = f"The question was {p['problem']}. The correct answer was {p[correct_answer]}. I got {p[user_answer]}. Walk me through what I did wrong in 1 sentence. Use only UTF-8 characters when responding and use no special characters."
             response = client.models.generate_content(model = "gemini-2.0-flash", contents = prompt).text
             wrong_answers.append(p[user_answer])
             wrong_questions.append(p["problem"])
