@@ -1,35 +1,41 @@
 from google import genai
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, redirect, url_for
 import re
+import json
 
 app = Flask(__name__)
 app.secret_key = "web-key"
+client = None
 
 def get_api_key():
     with open('api_key.txt', 'r') as file:
         api_key = file.readline().strip().split('=')[1]
-        print(api_key)
         return api_key
-try: 
-    client = genai.Client(api_key=get_api_key())
-except Exception as e:
-    print(f"Error initializing Gemini client: {e}")
-    client = None
 
-"""Home page"""
+
+
+""" Home Page Logic """
 @app.route("/", methods=["GET"])
 def home():
     print("practice-exam-generator START")
     return render_template("index.html")
 
-@app.route('/practice_exam', methods=["POST"])
-def generate_prompt():
+
+
+""" Practice Exam Page Logic """
+@app.route('/practice_exam', methods=["POST", "GET"])
+def generate_exam():
     message = ""
     error = None
+    problems = []
 
+    # Extract user input data from html page
     course = request.form.get("course", "").strip()
     topic = request.form.get("topic", "").strip()
     num_questions = request.form.get("num_questions", "10").strip()
+    #if url has 'is_from_import' argument then get question from json file
+    is_from_import = request.args.get("is_from_import")
+    if (is_from_import): problems = session['problems']
         
     if not course and not topic:
         error = "Please provide a course and a topic."
@@ -40,7 +46,7 @@ def generate_prompt():
     except ValueError:
         error = "Please enter a valid number of questions"
 
-    if not error and client:
+    if (not error and client) and not is_from_import:
         prompt = (
             f"Act as a tutor for {course}. Generate {num_questions} multiple-choice practice problems on {topic}. "
             "Format each problem as follows:"
@@ -56,15 +62,15 @@ def generate_prompt():
         try:
             response = client.models.generate_content(model = "gemini-2.0-flash", contents = prompt)
             message = response.text
-            print(message)
+            problems = parse_prompt(message)
+            print(problems)
         except Exception as e:
             error = f"Error generating questions: {str(e)}"
             print(error)
-    
-    problems = parse_prompt(message)
+
     session['problems'] = problems
 
-    """Generate a html template for each problem from the prompt"""
+    """ Generate a html template for each problem from the prompt """
     html = '<form action="/submit_quiz" method="POST">\n'
     for idx, p in enumerate(problems):
         html += f'  <div class="problem-block">\n'
@@ -88,7 +94,7 @@ def generate_prompt():
 
 
 
-"""Parse the prompt output into a map with the relavent information"""
+""" Parse the prompt output for the Exam Page into a map with the relavent information """
 def parse_prompt(prompt):
     pattern = r'problem:\s*(.*?)\s*a\)\s*(.*?)\s*b\)\s*(.*?)\s*c\)\s*(.*?)\s*d\)\s*(.*?)\s*answer:\s*(\w)'
     matches = re.findall(pattern, prompt, re.DOTALL)
@@ -107,7 +113,9 @@ def parse_prompt(prompt):
     return problems
 
 
-@app.route("/submit_quiz" , methods=["POST"])
+
+""" Answers Page Logic """
+@app.route("/submit_quiz", methods=["POST"])
 def submit_quiz():
     score = 0
     total = 0
@@ -115,6 +123,8 @@ def submit_quiz():
     wrong_answers = []
     html = '<form action="/submit_quiz" method="POST">\n'
     problems = session.get("problems", [])
+
+    """ Similar to html generation as the Exam Page, but this time for the Answers Page """
     for idx, p in enumerate(problems):
         html += f'  <div class="problem-block">\n'
         html += f'    <p><strong>Question {idx+1}:</strong> {p["problem"]}</p>\n'
@@ -130,18 +140,18 @@ def submit_quiz():
             wrong_answers.append(p[user_answer])
             wrong_questions.append(p["problem"])
         for letter in ['a', 'b', 'c', 'd']:
-            html += (
-                f'    <label class="{("green" if (letter == correct_answer) else "")} {("red" if (letter == user_answer and correct_answer != user_answer) else "")}">\n'
-                f'    <input type="radio" name="q{idx}" value="{letter}" disabled>\n'
-                f'      ({letter}) {p[letter]}\n'
-                f'    </label><br>\n'
+            html += (   # Mark correct answers in green and incorrect answers in red.
+                f'      <label class="{("green" if (letter == correct_answer) else "")} {("red" if (letter == user_answer and correct_answer != user_answer) else "")}">\n'
+                f'          <input type="radio" name="q{idx}" value="{letter}" disabled>\n'
+                f'          ({letter}) {p[letter]}\n'
+                f'      </label><br>\n'
             )
         if(response != ""):
             html += f"<p>What went wrong: {response}</p>"
         html += '  </div>\n  <br>\n'
     html += '</form>'
 
-    
+    # Generate feedback
     input = ""
     for a, q in zip(wrong_answers, wrong_questions):
         input += f"The question was {q}. The answer I incorrectly got was {a}."
@@ -152,6 +162,27 @@ def submit_quiz():
         ) 
     return render_template("answer.html", answers_html=html, score=score, total=total)  
 
+
+
+""" function to import saved exams from a json file"""
+@app.route("/file", methods=["POST"])
+def import_questions():
+    file = request.files['import']
+
+    try:
+        data = json.load(file.stream)
+    except json.JSONDecodeError:
+        return 'Invalid JSON file', 400
+            
+    session['problems'] = data
+    return redirect(url_for('generate_exam', is_from_import=True))
+
+
+
 """Main"""
 if __name__ == '__main__':
+
+    try: client = genai.Client(api_key=get_api_key())
+    except Exception as e: print(f"Error initializing Gemini client: {e}")
+
     app.run(host="0.0.0.0", port=5000, debug=True)

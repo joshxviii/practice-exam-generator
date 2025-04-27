@@ -10,7 +10,7 @@
 
     <div class="container">
         <h1>Practice Exam Generator<h1>
-    <form action="/practice_exam" method="POST" class="form">
+    <form action="/generate_exam" method="POST" class="form">
         <div class="form-group">
             <label for="course">Course</label>
             <input type="text" id="course" name="course" plageholder="Course" required>
@@ -27,10 +27,14 @@
         </div>
         </form>
     </form>
+    <form action="/file" method="POST" enctype="multipart/form-data">
+        <input type="file" name="import" id="file-input" required>
+        <button type="submit">Import</button>
+    </form>
 
-    {% if message is not none %}
+    <!-- {% if message is not none %}
         <h1 id="prompt">{{ message }}</h1>
-    {% endif %}
-    
+    {% endif %} -->
+
 </body>
 </html>
