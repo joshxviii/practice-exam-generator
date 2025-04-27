@@ -57,6 +57,17 @@ html, body {
     margin-top: 4px;
 }
   
+.logo {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+    color: #bb86fc;
+    text-decoration: none;
+}
+
 h1 {
     text-align: center;
     font-size: 2.5rem;
