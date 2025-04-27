@@ -131,7 +131,7 @@ def submit_quiz():
             wrong_questions.append(p["problem"])
         for letter in ['a', 'b', 'c', 'd']:
             html += (
-                f'    <label class="{ "green" if (letter == correct_answer and correct_answer == user_answer) else ( "red" if (letter == correct_answer and correct_answer != user_answer) else "") }">\n'
+                f'    <label class="{("green" if (letter == correct_answer) else "")} {("red" if (letter == user_answer and correct_answer != user_answer) else "")}">\n'
                 f'    <input type="radio" name="q{idx}" value="{letter}" disabled>\n'
                 f'      ({letter}) {p[letter]}\n'
                 f'    </label><br>\n'
