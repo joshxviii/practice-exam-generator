@@ -37,16 +37,17 @@ def generate_exam():
     is_from_import = request.args.get("is_from_import")
     if (is_from_import): problems = session['problems']
         
-    if not course and not topic:
-        error = "Please provide a course and a topic."
-    try:
-        num_questions = int(num_questions)
-        if num_questions < 1 or num_questions > 20:
-            error = "Number of questions must be between 1 and 20"
-    except ValueError:
-        error = "Please enter a valid number of questions"
-
     if (not error and client) and not is_from_import:
+
+        if not course or not topic:
+            return 'Please provide a course and a topic.', 400
+        try:
+            num_questions = int(num_questions)
+            if num_questions < 1 or num_questions > 20:
+                 return 'Number of questions must be between 1 and 20', 400
+        except ValueError:
+            return 'Please enter a valid number of questions', 400
+
         prompt = (
             f"Act as a tutor for {course}. Generate {num_questions} multiple-choice practice problems on {topic}. "
             "Format each problem as follows:"
