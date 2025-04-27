@@ -71,8 +71,8 @@ def generate_exam():
             error = f"Error generating questions: {str(e)}"
             print(error)
 
-    # Ensure the number of questions matches the user's input
-    if len(problems) != num_questions:
+    # Ensure the number of questions matches the user's input only if not imported
+    if not is_from_import and len(problems) != num_questions:
         return f"Expected {num_questions} questions, but got {len(problems)}. Please try again.", 400
 
     # Store the problems in the session
@@ -172,7 +172,7 @@ def submit_quiz():
 
 
 
-""" function to import saved exams from a json file"""
+""" function to import saved exams from a json file """
 @app.route("/file", methods=["POST"])
 def import_questions():
     file = request.files['import']
@@ -181,8 +181,11 @@ def import_questions():
         data = json.load(file.stream)
     except json.JSONDecodeError:
         return 'Invalid JSON file', 400
-            
-    session['problems'] = data
+
+    # Store the imported questions in the session
+    session['questions'] = data
+
+    # Redirect to the exam page to display the imported questions
     return redirect(url_for('generate_exam', is_from_import=True))
 
 
