@@ -20,20 +20,8 @@
             background-position: center; 
             background-repeat: no-repeat; 
             overflow: hidden; /* Prevent scrolling */
-            animation: slideIn 1.5s ease-in-out; /* Change to slide-in animation */
+            animation: slideIn 1.5s ease-in-out; /* Add slide-in animation */
         }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
         body, h1, h2, p, label, ul, li, button {
             color: white; /* Make all text white */
         }
@@ -45,7 +33,7 @@
         .left-section {
             position: absolute;
             top: 10%; /* Lower the left section further */
-            left: 2.5%; /* Move the left section halfway back to its original position */
+            left: 0;
             width: 60%; /* Take even more of the viewport area */
             height: auto; /* Adjust height to align with the container */
             display: flex;
@@ -59,7 +47,7 @@
 
         .left-section h2 {
             font-size: 3rem;
-            margin-bottom: 2rem; /* Add more space below headings */
+            margin-bottom: 1.5rem; /* Add more space below headings */
             color: white;
         }
 
@@ -75,7 +63,7 @@
             list-style-type: disc;
             margin-left: 1.5rem;
             color: white;
-            margin-bottom: 0; /* Remove extra space below the list */
+            margin-bottom: 2rem; /* Add more space below the list */
             padding-left: 2rem; /* Indent the bullet points */
         }
 
@@ -84,8 +72,15 @@
             margin-bottom: 1rem; /* Add more space below list items */
         }
 
-        .left-section h4 {
-            margin-bottom: 2rem; /* Add more space below the h4 element */
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
     </style>
     <div class="left-section">
