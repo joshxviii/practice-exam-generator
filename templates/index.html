@@ -1,12 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta tags for character encoding and responsive viewport -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Page title (customize by changing the text) -->
+    <title>My Flask App</title>
+    <!-- Link to CSS file in static folder -->
     <title>Practice Exam Generator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='home_style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='background.jpg') }}");
+            background-size: cover;
+            background-position: center; 
+            background-repeat: no-repeat; 
+        }
+    </style>
+    <div class="container">
+        <h1 class="title">Test Generator</h1>
+
+        <form action="/practice_exam" method="POST" class="form">
+            <div class="form-group">
+                <label for="course">Course</label>
+                <input type="text" id="course" name="course" placeholder="Enter course name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="topic">Topic</label>
+                <input type="text" id="topic" name="topic" placeholder="Enter topic" required>
+            </div>
+            <div class="form-group">
+                <label for="num_questions">Number of Questions</label>
+                <input type="number" id="num_questions" name="num_questions" value="10" min="1" max="20" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="submit-button">Generate</button>
+            </div>
 
     <div class="container">
         <h1>Practice Exam Generator<h1>
@@ -26,15 +61,20 @@
             <button type="submit" class="submit-button">Generate</button>
         </div>
         </form>
+
+        {% if message is not none %}
+            <h1 id="prompt">{{ message }}</h1>
+        {% endif %}
+    </div>
+
+    {% if message is not none %}
+        <h1 id="prompt">{{ message }}</h1>
+    {% endif %}
     </form>
     <form action="/file" method="POST" enctype="multipart/form-data">
         <input type="file" name="import" id="file-input" required>
         <button type="submit">Import</button>
     </form>
-
-    <!-- {% if message is not none %}
-        <h1 id="prompt">{{ message }}</h1>
-    {% endif %} -->
 
 </body>
 </html>

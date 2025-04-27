@@ -1,74 +1,110 @@
-/*#region HOME STYLE*/
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
-
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f5f7fa;
-    height: 100vh;
+    font-family: sans-serif;
+    background-color: #e5e7eb;
+    min-height: 100vh;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 50px;
+    text-align: center;
+    margin-top: -40px;
+}
+h1.title {
+    font-family: Montserrat;
+    font-size: 54px;
+    font-weight: 700;
+    color: hsl(210, 74%, 29%);
+    margin-bottom: 2rem;
+}
 form {
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: hsl(180, 3%, 11%);
+    padding: 3rem;
+    border-radius: 25px;
+    box-shadow: 4px 4px 30px hsl(257, 100%, 54%);
+    border: 5px solid hsl(180, 8%, 4%);
+    width: 100%;
+    max-width: 400px;
     display: flex;
     flex-direction: column;
-    width: 300px;
+    gap: 2rem;
 }
-
+label {
+    font-family: Montserrat;
+    display: block;
+    margin-bottom: 1.5rem;
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: hsl(210, 74%, 29%);
+}
 input {
-    margin-bottom: 15px;
-    padding: 10px;
-    border: 1px solid #cccccc;
-    border-radius: 8px;
-    font-size: 16px;
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid #d1d5db;
+    border-radius: 20px;
+    font-size: 1rem;
+    background-color: hsl(180, 3%, 11%);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
-
-.submit-button {
-    background-color: #4CAF50; /* green but soft */
-    color: white;
-    padding: 12px 24px;
-    font-size: 1.2rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    margin-top: 30px;
-}
-
-.container {
-    max-width: 880px;
-    margin: 0 auto;
-    padding: 20px;
-    text-align: center;
-}
-
-.submit-button:hover {
-    background-color: #45a049; /* slightly darker on hover */
-    transform: scale(1.05);    /* subtle pop on hover */
-}
-
 input:focus {
-    border-color: #4a90e2;
+    border-color: hsl(180, 8%, 4%);
+    box-shadow: 4px 4px 30px hsl(257, 100%, 54%);
     outline: none;
 }
-
-button:hover {
-    background-color: #357ABD;
+.submit-button {
+    background-color: hsl(252, 71%, 33%);
+    color: hsl(258, 19%, 95%);
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: 700;
+    border: 2px solid hsl(240, 10%, 2%);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    margin-top: 0.5rem;
+    width: 100%;
+}
+.submit-button:hover {
+    background-color: hsl(252, 74%, 47%);
+    animation-name: glow;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    transform: translateY(-1px);
+}
+.submit-button:active {
+    transform: translateY(0);
 }
 
-h1 {
-    margin-top: 20px;
-    color: blue;
-    font-size: 24px;
+h1#prompt {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #1f2937;
+    margin-top: 1.5rem;
 }
-/*#endregion*/
+@keyframes glow{
+    0%{box-shadow: 2px 2px 30px hsl(252, 74%, 47%)}
+}
+
+@media (max-width: 640px) {
+    .container {
+        padding: 1rem;
+    }
+
+
+    form {
+        padding: 1.5rem;
+        max-width: 100%;
+    }
+    h1.title {
+        font-size: 1.75rem;
+    }
+}
