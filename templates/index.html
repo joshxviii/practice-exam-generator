@@ -5,9 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Page title (customize by changing the text) -->
-    <title>My Flask App</title>
     <!-- Link to CSS file in static folder -->
-    <title>Practice Exam Generator</title>
+    <title>TrueTest AI</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='home_style.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,10 +19,90 @@
             background-size: cover;
             background-position: center; 
             background-repeat: no-repeat; 
+            overflow: hidden; /* Prevent scrolling */
+            animation: slideIn 1.5s ease-in-out; /* Change to slide-in animation */
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        body, h1, h2, p, label, ul, li, button {
+            color: white; /* Make all text white */
+        }
+        .container {
+            margin-left: auto;
+            margin-right: 5%; /* Ensure no overlap with the left section */
+        }
+
+        .left-section {
+            position: absolute;
+            top: 10%; /* Lower the left section further */
+            left: 2.5%; /* Move the left section halfway back to its original position */
+            width: 60%; /* Take even more of the viewport area */
+            height: auto; /* Adjust height to align with the container */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: transparent; /* Make the background transparent */
+            padding: 2rem;
+            box-shadow: none; /* Remove the border/shadow */
+            overflow-y: auto;
+        }
+
+        .left-section h2 {
+            font-size: 3rem;
+            margin-bottom: 2rem; /* Add more space below headings */
+            color: white;
+        }
+
+        .left-section h3 {
+            font-size: 2.5rem;
+            color: white;
+            line-height: 1.5;
+            margin-bottom: 1.5rem; /* Add more space below paragraphs */
+        }
+
+        .left-section ul {
+            font-size: 2rem;
+            list-style-type: disc;
+            margin-left: 1.5rem;
+            color: white;
+            margin-bottom: 0; /* Remove extra space below the list */
+            padding-left: 2rem; /* Indent the bullet points */
+        }
+
+        .left-section ul li {
+            font-size: 1.6rem; /* Make list items slightly smaller */
+            margin-bottom: 1rem; /* Add more space below list items */
+        }
+
+        .left-section h4 {
+            margin-bottom: 2rem; /* Add more space below the h4 element */
         }
     </style>
+    <div class="left-section">
+        <h2>Easy. Efficient. Effective</h2>
+        <h3>Studying has never been easier.</h3>
+        <ul>
+            <li>Prompt Engineered to create perfect practice problem sets</li>
+            <li>Import your favorite problem sets to get feedback</li>
+            <li>Download your exams as PDFs for offline use</li>
+            <li>Get instant feedback with detail</li>
+            <li>Learn <i>exactly</i> what to focus on to pass your exams</li>
+        </ul>
+        <h4>TrueTest AI can prep you for any exam, at any level, at any time</h4>
+        <p>Made by Fabian, Josh, and Chris</p>
+    </div>
     <div class="container">
-        <h1 class="title">Practice Test Generator</h1>
+        <h1 class="title">Try TrueTest AI</h1>
 
         <form action="/practice_exam" method="POST" class="form">
             <div class="form-group">
