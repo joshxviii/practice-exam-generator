@@ -1,4 +1,3 @@
-/*#region HOME STYLE*/
 * {
     box-sizing: border-box;
     margin: 0;
@@ -13,36 +12,52 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-image: url('https://www.braumillerconsulting.com/wp-content/uploads/2025/02/Customs-broker-license-exam.jpg'); /* Replace with actual HD image URL */
+    background-size: cover;
+    background-position: center;
+    color: #333;
 }
 
 form {
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.9); /* Slight transparency for a modern look */
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
-    width: 300px;
+    width: 400px;
+    backdrop-filter: blur(10px); /* Adds a subtle blur effect */
 }
 
 input {
-    margin-bottom: 15px;
-    padding: 10px;
+    margin-bottom: 20px;
+    padding: 12px;
     border: 1px solid #cccccc;
     border-radius: 8px;
     font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+input:focus {
+    border-color: #4CAF50; /* Matches the submit button */
+    outline: none;
 }
 
 .submit-button {
-    background-color: #4CAF50; /* green but soft */
+    background-color: #4CAF50; /* Professional green */
     color: white;
-    padding: 12px 24px;
+    padding: 14px 28px;
     font-size: 1.2rem;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    margin-top: 30px;
+    margin-top: 20px;
+}
+
+.submit-button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
 }
 
 .container {
@@ -52,23 +67,17 @@ input {
     text-align: center;
 }
 
-.submit-button:hover {
-    background-color: #45a049; /* slightly darker on hover */
-    transform: scale(1.05);    /* subtle pop on hover */
-}
-
-input:focus {
-    border-color: #4a90e2;
-    outline: none;
-}
-
-button:hover {
-    background-color: #357ABD;
-}
-
 h1 {
     margin-top: 20px;
-    color: blue;
-    font-size: 24px;
+    color: #333;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+p {
+    margin-top: 10px;
+    color: #555;
+    font-size: 16px;
+    line-height: 1.5;
 }
 /*#endregion*/

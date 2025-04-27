@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Flask App</title>
+    <title>Practice Exam Generator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='home_style.css') }}">
 </head>
 <body>
+
     <div class="container">
-        <h1>Test Generator<h1>
+        <h1>Practice Exam Generator<h1>
     <form action="/practice_exam" method="POST" class="form">
         <div class="form-group">
             <label for="course">Course</label>
@@ -26,7 +27,6 @@
         </div>
         </form>
     </form>
-
 
 
     {% if message is not none %}
