@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Flask App</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='home_style.css') }}">
 </head>
 <body>
     <div class="container">
@@ -27,8 +27,8 @@
         </form>
     </form>
 
-    
 
+    
     {% if message is not none %}
         <h1 id="prompt">{{ message }}</h1>
     {% endif %}

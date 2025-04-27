@@ -3,14 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quiz</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <title>Exam</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='exam_style.css') }}">
 </head>
 <body>
-  <h1>Quiz</h1>
 
-  <!-- This is where the auto-generated exam will appear -->
-  {{ exam_problems_html|safe }}
+    <div class="container">
+        <h1>Practice Exam for {{ course }} Course.</h1>
+
+        <!-- This is where the auto-generated exam will appear -->
+        {{ exam_problems_html|safe }}
+    </div>
 
 </body>
 </html>

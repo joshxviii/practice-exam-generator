@@ -1,5 +1,5 @@
 from google import genai
-from flask import Flask, render_template, request, url_for, session, redirect
+from flask import Flask, render_template, request
 import re
 
 app = Flask(__name__)
@@ -27,16 +27,11 @@ def home():
 @app.route('/practice_exam', methods=["POST"])
 def generate_prompt():
     message = ""
-    questions = ""
     error = None
 
     course = request.form.get("course", "").strip()
     topic = request.form.get("topic", "").strip()
     num_questions = request.form.get("num_questions", "10").strip()
-
-    session["course"] = course
-    session["topic"] = topic
-    session["num_questions"] = num_questions
         
     if not course and not topic:
         error = "Please provide a course and a topic."
@@ -67,10 +62,7 @@ def generate_prompt():
         except Exception as e:
             error = f"Error generating questions: {str(e)}"
     
-    session['message'] = message
     print(message)
-    session['error'] = error
-    session['questions'] = questions
     problems = parse_prompt(message)
     # exam_problems_html = generate_html([
     #     {
@@ -84,7 +76,7 @@ def generate_prompt():
     exam_problems_html = generate_html(problems)
 
     #Go to new page with generated problems
-    return render_template("exam.html", exam_problems_html=exam_problems_html)
+    return render_template("exam.html", exam_problems_html=exam_problems_html, course=course)
 
 
 
@@ -117,17 +109,21 @@ def generate_html(problems):
         
         for letter in ['a', 'b', 'c', 'd']:# create radio button selection for each problem
             html += (
-                f'    <label>\n'
+                f'    <label class="choice-label">\n'
                 f'      <input type="radio" name="q{idx}" value="{letter}">\n'
                 f'      ({letter}) {p[letter]}\n'
                 f'    </label><br>\n'
             )
-        
+
+        html += f'<p>*Answer: {p["answer"]}</p>' #probably take this part out
         html += '  </div>\n  <br>\n'
-        html += f'<p>*Answer: {p["answer"]}</p>'
+       
     html += '<input type="submit" value="Submit">\n'
     html += '</form>'
     return html
 
+
+
+"""Main"""
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True)
