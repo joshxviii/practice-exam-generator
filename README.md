@@ -5,6 +5,7 @@
 - **Answer Questions**: Answer multiple-choice questions and receive a score at the end of the exam.
 - **Feedback**: Get feedback based on your answers to help improve your understanding of the material.
 - **Import Exams**: Import pre-made exams from a json file in case you want to share a particularly good exam.
+-**Export Exam to PDF**: Create an exam, and export it as a PDF with an answer key
 
 ### **How To Use**
 1. **Input Information**:  
