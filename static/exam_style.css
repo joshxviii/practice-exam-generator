@@ -80,5 +80,8 @@ h1 {
     background-color: #45a049; /* slightly darker on hover */
     transform: scale(1.05);    /* subtle pop on hover */
 }
+.header {
+    color: #bb86fc;
+}
 
 /*#endregion*/
