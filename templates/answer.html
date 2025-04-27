@@ -4,8 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Score</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='answer_style.css') }}">
 </head>
 <body>
     <h1>Score: {{score}} / {{total}}</h1>
+
+    <div class="container">
+        <!-- This is where the html answers will appear -->
+        {{ answers_html|safe }}
+    </div>
+
 </body>
 </html>

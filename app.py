@@ -5,8 +5,12 @@ import re
 app = Flask(__name__)
 app.secret_key = "web-key"
 
+def get_api_key():
+    with open('api_key.txt', 'r') as file:
+        api_key = file.readline().strip().split('=')[1]
+        return api_key
 try: 
-    client = genai.Client(api_key="AIzaSyDsnJdjMVuuK8K6tFzZjvEARaUrcErCkBg")
+    client = genai.Client(api_key=get_api_key())
 except Exception as e:
     print(f"Error initializing Gemini client: {e}")
     client = None
@@ -14,14 +18,7 @@ except Exception as e:
 """Home page"""
 @app.route("/", methods=["GET"])
 def home():
-    print("HELLO")
-
-    # if request.method == "POST":
-    #     return generate_prompt()
-    # questions = session.pop('questions', None)
-    # error = session.pop('error', None)
-    # message = session.pop('message', None)
-    #return render_template("index.html", questions=questions, error=error, message=message)
+    print("practice-exam-generator START")
     return render_template("index.html")
 
 @app.route('/practice_exam', methods=["POST"])
@@ -63,19 +60,28 @@ def generate_prompt():
     
     problems = parse_prompt(message)
     session['problems'] = problems
-    # exam_problems_html = generate_html([
-    #     {
-    #         'problem': 'What is the value of sin(π/6)?',
-    #         'a': '1/2',
-    #         'b': '√3/2',
-    #         'c': '1',
-    #         'd': '0'
-    #     }
-    # ])
-    exam_problems_html = generate_html(problems)
+
+    """Generate a html template for each problem from the prompt"""
+    html = '<form action="/submit_quiz" method="POST">\n'
+    for idx, p in enumerate(problems):
+        html += f'  <div class="problem-block">\n'
+        html += f'    <p><strong>Question {idx+1}:</strong> {p["problem"]}</p>\n'
+        
+        for letter in ['a', 'b', 'c', 'd']:# create radio button selection for each problem option
+            html += (
+                f'    <label class="choice-label">\n'
+                f'      <input type="radio" name="q{idx}" value="{letter}" required>\n'
+                f'      ({letter}) {p[letter]}\n'
+                f'    </label><br>\n'
+            )
+
+        html += '  </div>\n  <br>\n'
+       
+    html += '<input type="submit" class="submit-button" value="Submit">\n'
+    html += '</form>'
 
     #Go to new page with generated problems
-    return render_template("exam.html", exam_problems_html=exam_problems_html, course=course)
+    return render_template("exam.html", exam_problems_html=html, course=course)
 
 
 
@@ -98,47 +104,50 @@ def parse_prompt(prompt):
     return problems
 
 
-
-"""Generate an html template for each problem that can be injected into the renderer"""
-def generate_html(problems):
-    html = '<form action="/submit_quiz" method="POST">\n'
-    for idx, p in enumerate(problems):
-        html += f'  <div class="problem-block">\n'
-        html += f'    <p><strong>Question {idx+1}:</strong> {p["problem"]}</p>\n'
-        
-        for letter in ['a', 'b', 'c', 'd']:# create radio button selection for each problem
-            html += (
-                f'    <label class="choice-label">\n'
-                f'      <input type="radio" name="q{idx}" value="{letter}">\n'
-                f'      ({letter}) {p[letter]}\n'
-                f'    </label><br>\n'
-            )
-
-        #html += f'<p>*Answer: {p["answer"]}</p>' #probably take this part out
-        html += '  </div>\n  <br>\n'
-       
-    html += '<input type="submit" class="submit-button" value="Submit">\n'
-    html += '</form>'
-    return html
-
 @app.route("/submit_quiz" , methods=["POST"])
 def submit_quiz():
     score = 0
     total = 0
-    correct_answers = []
-    user_answers = []
+    wrong_questions = []
+    wrong_answers = []
+    html = '<form action="/submit_quiz" method="POST">\n'
     problems = session.get("problems", [])
     for idx, p in enumerate(problems):
-        correct_answer = p['answer']
+        html += f'  <div class="problem-block">\n'
+        html += f'    <p><strong>Question {idx+1}:</strong> {p["problem"]}</p>\n'
+        correct_answer = p['answer'] # a, b, c or d
         user_answer = request.form.get(f'q{idx}')
         total += 1
-        if user_answer == correct_answer:
-            score += 1
-            correct_answers.append(correct_answer)
+        response = ""
+        if(user_answer == correct_answer):
+            score+=1
         else:
-            user_answers.append(user_answer)
-    return render_template("answer.html", score=score, total=total, correct_answers=correct_answers, user_answers=user_answers)
-        
+            prompt = f"The question was {p["problem"]}. The correct answer was {p[correct_answer]}. I got {p[user_answer]}. Walk me through what I did wrong in 1 sentence. Use only UTF-8 characters when responding and use no special characters."
+            response = client.models.generate_content(model = "gemini-2.0-flash", contents = prompt).text
+            wrong_answers.append(p[user_answer])
+            wrong_questions.append(p["problem"])
+        for letter in ['a', 'b', 'c', 'd']:
+            html += (
+                f'    <label class="{ "green" if (letter == correct_answer and correct_answer == user_answer) else ( "red" if (letter == correct_answer and correct_answer != user_answer) else "") }">\n'
+                f'    <input type="radio" name="q{idx}" value="{letter}" disabled>\n'
+                f'      ({letter}) {p[letter]}\n'
+                f'    </label><br>\n'
+            )
+        if(response != ""):
+            html += f"<p>What went wrong: {response}</p>"
+        html += '  </div>\n  <br>\n'
+    html += '</form>'
+
+    
+    input = ""
+    for a, q in zip(wrong_answers, wrong_questions):
+        input += f"The question was {q}. The answer I incorrectly got was {a}."
+    input += "Given all the mistakes I made on this practice test, give me the main subjects that I should work on to improve my skills in this topic in 1 sentence."
+    if(len(wrong_answers) > 0):
+        html += (
+            f'<br><p>Tips for the future: {client.models.generate_content(model = "gemini-2.0-flash", contents = input).text}</p>'
+        ) 
+    return render_template("answer.html", answers_html=html, score=score, total=total)  
 
 """Main"""
 if __name__ == '__main__':

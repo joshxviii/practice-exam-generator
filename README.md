@@ -8,7 +8,7 @@
 ### **How To Use**
 1. **Input Information**:  
    - Enter your **Course** (e.g., "Math", "Music Theory", etc.).
-   - Select your **Topic** (e.g., "Algebra", "Intervals", etc.).
+   - Select your **Topic** (e.g., "Algebra", "Scales", etc.).
    - Specify the **Amount of Questions** you want to include in the exam.
    
 2. **Generate Exam**:  
@@ -32,7 +32,7 @@
   The backend processes the exam generation, user inputs, and scoring. It dynamically generates questions and answers using Python, and serves them to the user via Flask routes.
 
 - **Data Parsing**:  
-  The exam questions and answers are parsed from pre-defined datasets using **regular expressions (regex)** to extract the necessary components (question, choices, and correct answer). These are dynamically rendered in the HTML.
+  The exam questions and answers are parsed from pre-defined datasets using **regular expressions (regex)** to extract the necessary components (question, choices, and correct answers). These are dynamically rendered with HTML.
 
 ### **How to Run Locally**
 
