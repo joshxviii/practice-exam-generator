@@ -1,4 +1,7 @@
-# **Practice Exam Generator**
+# **TrueTest AI - A project from RamHacks 2025**
+
+![image](https://github.com/user-attachments/assets/bef9f062-a9b3-4f5b-820d-db92ea597e4c)
+
 
 ### **Features**
 - **Generate Practice Exams**: Create exams for any subject, with questions covering a wide variety of topics.
