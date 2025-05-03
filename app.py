@@ -232,4 +232,4 @@ if __name__ == '__main__':
     try: client = genai.Client(api_key=get_api_key())
     except Exception as e: print(f"Error initializing Gemini client: {e}")
 
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=80, debug=True)
