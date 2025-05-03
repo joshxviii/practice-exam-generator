@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Meta tags for character encoding and responsive viewport -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Page title (customize by changing the text) -->
-    <!-- Link to CSS file in static folder -->
     <title>TrueTest AI</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='home_style.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,181 +10,56 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <style>
-        body {
-            background-image: url("{{ url_for('static', filename='background.jpg') }}");
-            background-size: cover;
-            background-position: center; 
-            background-repeat: no-repeat; 
-            overflow: hidden; /* Prevent scrolling */
-            animation: slideIn 1.5s ease-in-out; /* Add slide-in animation */
-        }
-        body, h1, h2, p, label, ul, li, button {
-            color: white; /* Make all text white */
-        }
-        .container {
-            margin-left: auto;
-            margin-right: 5%; /* Ensure no overlap with the left section */
-        }
 
-        .left-section {
-            position: absolute;
-            top: 50%; /* Position the left section in the middle of the view height */
-            transform: translateY(-50%); /* Center it vertically */
-            left: 0;
-            width: 60%; /* Take even more of the viewport area */
-            height: auto; /* Adjust height to align with the container */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            background: transparent; /* Make the background transparent */
-            padding: 2rem;
-            box-shadow: none; /* Remove the border/shadow */
-            overflow-y: auto;
-        }
+    <a href="/" class="logo">TrueTest AI</a> <!-- Moved logo to the top left -->
 
-        .left-section h2 {
-            font-size: 3rem;
-            margin-bottom: 1.5rem; /* Add more space below headings */
-            color: white;
-        }
+    <div class="wrapper">
+        <div class="container">
+            <h1 class="title">Try <p>TrueTest AI</p></h1>
 
-        .left-section h3 {
-            font-size: 2.5rem;
-            color: white;
-            line-height: 1.5;
-            margin-bottom: 1.5rem; /* Add more space below paragraphs */
-        }
+            <form action="/practice_exam" method="POST" class="form">
+                <div id="course-form" class="form-group">
+                    <label class="label" for="course">Course</label>
+                    <input type="text" id="course" name="course" placeholder="Enter course name" required>
+                </div>
 
-        .left-section ul {
-            font-size: 2rem;
-            list-style-type: disc;
-            margin-left: 1.5rem;
-            color: white;
-            margin-bottom: 1rem; /* Reduce space below the list */
-            padding-left: 2rem; /* Indent the bullet points */
-        }
-
-        .left-section ul li {
-            font-size: 1.6rem; /* Make list items slightly smaller */
-            margin-bottom: 1rem; /* Add more space below list items */
-        }
-
-        .left-section h4 {
-            margin-bottom: 2.5rem; /* Increase space below the h4 tag */
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .left-section {
-                position: static; /* Stack the left section above the container */
-                width: 100%; /* Take full width on mobile */
-                padding: 1rem; /* Adjust padding for smaller screens */
-                text-align: center; /* Center-align text for better readability */
-            }
-
-            .container {
-                margin: 0 auto; /* Center the container */
-                width: 90%; /* Adjust width for mobile */
-                padding: 1rem; /* Add padding for better spacing */
-            }
-
-            .left-section h2, .left-section h3, .left-section ul, .left-section p {
-                font-size: 1.2rem; /* Adjust font size for smaller screens */
-                line-height: 1.5; /* Ensure proper spacing */
-            }
-
-            .left-section ul {
-                padding-left: 1rem; /* Reduce indentation for mobile */
-            }
-
-            .left-section ul li {
-                font-size: 1rem; /* Further reduce list item size for mobile */
-            }
-        }
-        .logo {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            font-size: 24px;
-            font-weight: bold;
-            font-family: 'Arial', sans-serif;
-            color: #bb86fc;
-            text-decoration: none;
-        }
-        #course-form, #topic-form {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        .form-group .label {
-            width: 30%;
-            text-align: right; /* Align label text to the right */
-            margin-right: 1rem; /* Add spacing between the label and input */
-        }
-        .title p {
-            display: inline; /* Ensure it stays inline with the text */
-            font-size: 2.5rem; /* Adjust size to make it stand out */
-            color: #bb86fc; /* Highlight color */
-        }
-
-    </style>
-    <div class="left-section">
-        <h2>Easy. Efficient. Effective</h2>
-        <h3>Studying has never been easier.</h3>
-        <ul>
-            <li>Prompt Engineered to create perfect practice problem sets</li>
-            <li>Import your favorite problem sets to get feedback</li>
-            <li>Download your exams as PDFs for offline use</li>
-            <li>Get instant feedback with detail</li>
-            <li>Learn <i>exactly</i> what to focus on to pass your exams</li>
-        </ul>
-        <h4>TrueTest AI can prep you for any exam, at any level, at any time</h4>
-        <footer>Made by <a href="https://github.com/fabian822">Fabian</a>,<a href="https://github.com/joshxviii"> Josh</a>, and <a href="https://github.com/AlgNinja"> Chris</a></footer>
-    </div>
-    <div class="container">
-        <a href="/" class="logo">TrueTest AI</a>
-        <h1 class="title">Try <p>TrueTest AI</p></h1>
-
-        <form action="/practice_exam" method="POST" class="form">
-            <div id="course-form" class="form-group">
-                <label class="label" for="course">Course</label>
-                <input type="text" id="course" name="course" placeholder="Enter course name" required>
-            </div>
-
-            <div id="topic-form" class="form-group">
-                <label class="label" for="topic">Topic</label>
-                <input type="text" id="topic" name="topic" placeholder="Enter topic" required>
-            </div>
-            <div class="form-group">
-                <label for="num_questions">Number of Questions</label>
-                <input type="number" id="num_questions" name="num_questions" value="10" min="1" max="20" required>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="submit-button">Generate</button>
-            </div>
-            <div class="form-group">
-                <button type="submit" formaction="/generate_pdf" formmethod="GET" class="submit-button">Generate PDF</button>
-            </div>
-        </form>
-        <form action="/file" method="POST" enctype="multipart/form-data" class="import-form" style="margin-top: 2rem;">
-            <div class="form-group">
-                <input type="file" name="import" id="file-input" style="width: 90%;" required>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="submit-button">Import</button>
-            </div>
-        </form>
+                <div id="topic-form" class="form-group">
+                    <label class="label" for="topic">Topic</label>
+                    <input type="text" id="topic" name="topic" placeholder="Enter topic" required>
+                </div>
+                <div class="form-group">
+                    <label for="num_questions">Number of Questions</label>
+                    <input type="number" id="num_questions" name="num_questions" value="10" min="1" max="20" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="submit-button">Generate</button>
+                </div>
+                <div class="form-group">
+                    <button type="submit" formaction="/generate_pdf" formmethod="GET" class="submit-button">Generate PDF</button>
+                </div>
+            </form>
+            <form action="/file" method="POST" enctype="multipart/form-data" class="import-form" style="margin-top: 1.5rem;"> <!-- Reduced margin -->
+                <div class="form-group">
+                    <input type="file" name="import" id="file-input" style="width: 90%;" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="submit-button">Import</button>
+                </div>
+            </form>
+        </div>
+        <div class="left-section">
+            <h2>Easy. Efficient. Effective</h2>
+            <h3>Studying has never been easier.</h3>
+            <ul>
+                <li>Prompt Engineered to create perfect practice problem sets</li>
+                <li>Import your favorite problem sets to get feedback</li>
+                <li>Download your exams as PDFs for offline use</li>
+                <li>Get instant feedback with detail</li>
+                <li>Learn <i>exactly</i> what to focus on to pass your exams</li>
+            </ul>
+            <h4>TrueTest AI can prep you for any exam, at any level, at any time</h4>
+            <footer>Made by <a href="https://github.com/fabian822">Fabian</a>,<a href="https://github.com/joshxviii"> Josh</a>, and <a href="https://github.com/AlgNinja"> Chris</a></footer>
+        </div>
     </div>
 </body>
 </html>

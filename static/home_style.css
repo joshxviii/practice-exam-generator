@@ -115,3 +115,168 @@ a {
 a:focus {
     color: purple;
 }
+/* Global box-sizing to avoid layout issues */
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%; /* Ensure the body and html take up the full viewport height */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+}
+
+body {
+    background-image: url("background.jpg");
+    background-size: cover;
+    background-position: center; 
+    background-repeat: no-repeat; 
+    overflow: hidden; /* Prevent scrolling by default */
+    animation: slideIn 1.5s ease-in-out;
+}
+
+body, h1, h2, p, label, ul, li, button {
+    color: white;
+}
+
+.logo {
+    position: absolute;
+    top: 1rem; /* Position at the top */
+    left: 1rem; /* Position at the left */
+    font-size: 1.2rem; /* Made the font size smaller */
+    font-weight: bold;
+    text-decoration: none;
+    color: #a855f7; /* Matches the button background color */
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: row; /* Default: side-by-side layout */
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    margin: 1rem auto; /* Reduced margin */
+    width: 90%;
+    max-width: 1200px;
+}
+
+.container {
+    flex: 1;
+    width: 50%;
+    margin: 0 auto;
+}
+
+.title p {
+    display: inline;
+    color: #a855f7; /* Matches the button background color */
+}
+
+.left-section {
+    flex: 1;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1.5rem; /* Reduced padding */
+    background: transparent;
+}
+
+.left-section h2 {
+    font-size: 3rem;
+    margin-bottom: 1rem; /* Reduced margin */
+    color: white;
+}
+
+.left-section h3 {
+    font-size: 2.5rem;
+    color: white;
+    line-height: 1.5;
+    margin-bottom: 1rem; /* Reduced margin */
+}
+
+.left-section ul {
+    font-size: 2rem;
+    list-style-type: disc;
+    margin-left: 1rem; /* Reduced margin */
+    color: white;
+    margin-bottom: 1rem;
+    padding-left: 1.5rem; /* Reduced padding */
+}
+
+.left-section ul li {
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem; /* Reduced margin */
+}
+
+.left-section h4 {
+    margin-bottom: 1.5rem; /* Reduced margin */
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@media (min-width: 769px) {
+    .left-section {
+        order: 1; /* Place the left section first on desktop */
+        margin-left: -20%; /* Move the left section further to the left */
+    }
+
+    .container {
+        margin-right: -15%;
+        order: 2; /* Place the container second on desktop */
+    }
+}
+
+@media (max-width: 768px) {
+    html, body {
+        height: auto; /* Allow body to grow with content on mobile */
+    }
+
+    body {
+        overflow: auto; /* Enable scrolling for mobile users */
+        padding-top: 2rem; /* Reduced padding */
+    }
+
+    .logo {
+        display: none; /* Hide the logo on mobile */
+    }
+
+    .wrapper {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: center;
+    }
+
+    .container {
+        width: 90%; /* Reduce container width for mobile */
+        text-align: center;
+        margin-top: 0; /* Remove margin-top since padding is added to the body */
+    }
+
+    .left-section {
+        width: 100%; /* Take full width */
+        padding: 1rem; /* Reduced padding */
+        margin-top: 1.5rem; /* Reduced margin */
+        text-align: center; /* Center-align text */
+    }
+
+    .left-section h2, .left-section h3, .left-section ul, .left-section p {
+        font-size: 1.2rem; /* Adjust font size for smaller screens */
+        line-height: 1.5;
+    }
+
+    .left-section ul {
+        padding-left: 1rem;
+    }
+
+    .left-section ul li {
+        font-size: 1rem;
+    }
+}

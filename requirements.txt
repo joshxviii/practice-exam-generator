@@ -1,3 +1,4 @@
 Flask==2.2.3
 google-genai==1.12.1
 fpdf==1.7.2
+Werkzeug==2.2.2

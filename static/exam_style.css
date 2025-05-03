@@ -1,52 +1,63 @@
-/*#region EXAM.HTML */
+/* General Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 html, body {
     font-family: 'Montserrat', sans-serif;
     background-color: #121212; /* Set the entire page background to dark */
     color: #e0e0e0;
-    height: 100vh;
-    display: flex;
-    height: auto;
-    min-height: 100%;
+    height: 100%;
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
 .logo {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    font-size: 24px;
+    position: absolute;
+    top:10px;
+    left:10px;
+    font-size: 20px;
     font-weight: bold;
     font-family: 'Arial', sans-serif;
     color: #bb86fc;
     text-decoration: none;
 }
 
+.container {
+    max-width: 880px;
+    width: 100%; /* Ensure the container takes the full width */
+    margin: 10px auto;
+    padding: 20px;
+    text-align: center;
+    overflow:auto;
+}
+
 form {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center the problem containers within the form */
+    align-items: center; /* Center the form content */
     gap: 1rem;
+    width: 100%; /* Ensure the form takes the full width */
+    max-width: 600px; /* Limit the form width on larger screens */
+    margin: 0 auto; /* Center the form horizontally */
+    padding: 0 15px; /* Add padding to prevent content from touching the edges */
 }
 
 .problem-block {
-    width: 100%;
-    max-width: 600px; /* Ensure consistent width for problem containers */
-    margin: 0 auto; /* Center the problem block with even spacing */
+    width: 100%; /* Ensure problem blocks take the full width */
+    max-width: 600px; /* Limit the width for larger screens */
+    margin: 0 auto; /* Center the problem block */
     padding: 15px; /* Ensure consistent padding */
     border: 1px solid #ccc;
     border-radius: 8px;
-}
-
-.container {
-    max-width: 880px;
-    margin: 0 auto;
-    padding: 20px;
-    text-align: center;
+    background-color: #1e1e1e; /* Add a background color for better visibility */
 }
 
 .choice-label {
@@ -54,7 +65,7 @@ form {
     display: flex;
     align-items: flex-start;
     gap: 8px;
-    margin: 0 auto; /* Center the choice label with even spacing */
+    margin: 0 auto; /* Center the choice label */
     padding: 0 10px; /* Add consistent padding on left and right */
     margin-bottom: 10px;
     line-height: 1.4;
@@ -63,7 +74,7 @@ form {
 .choice-label input[type="radio"] {
     margin-top: 4px;
 }
-  
+
 h1 {
     text-align: center;
     font-size: 2.5rem;
@@ -89,10 +100,53 @@ h1 {
 
 .submit-button:hover {
     background-color: #45a049; /* slightly darker on hover */
-    transform: scale(1.05);    /* subtle pop on hover */
-}
-.header {
-    color: #bb86fc;
+    transform: scale(1.05); /* subtle pop on hover */
 }
 
-/*#endregion*/
+.header {
+    color: #bb86fc; /* Match the theme color */
+    font-size: 2.5rem; /* Adjust font size for visibility */
+    text-align: center; /* Center the text */
+    margin-top: 100px; /* Add sufficient space below the logo */
+    font-family: 'Montserrat', sans-serif;
+    z-index: 10; /* Ensure it appears above other elements */
+    position: relative; /* Ensure proper positioning */
+}
+
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+    html, body {
+        justify-content: flex-start; /* Ensure content starts from the top */
+        align-items: stretch; /* Stretch content to fit the screen width */
+    }
+
+    .container {
+        width: 100%; /* Ensure the container takes the full width of the screen */
+        padding: 10px; /* Reduce padding for smaller screens */
+    }
+
+    form {
+        width: 100%; /* Ensure the form takes the full width of the container */
+        max-width: none; /* Remove max-width restriction */
+        padding: 0 10px; /* Add padding to prevent content from touching the edges */
+    }
+
+    .problem-block {
+        width: 100%; /* Ensure problem blocks take the full width */
+        max-width: none; /* Remove max-width restriction */
+        padding: 10px; /* Reduce padding for smaller screens */
+    }
+
+    h1 {
+        font-size: 2rem; /* Reduce font size for smaller screens */
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
+    .submit-button {
+        width: 100%; /* Make the button take the full width */
+        padding: 10px; /* Adjust padding for smaller screens */
+        font-size: 1rem; /* Reduce font size for smaller screens */
+    }
+}
